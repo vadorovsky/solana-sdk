@@ -3469,7 +3469,7 @@ dependencies = [
 
 [[package]]
 name = "solana-program-memory"
-version = "2.3.0"
+version = "2.3.1"
 dependencies = [
  "solana-define-syscall",
 ]
