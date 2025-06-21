@@ -3522,8 +3522,6 @@ dependencies = [
  "borsh 0.10.4",
  "borsh 1.5.5",
  "bytemuck",
- "console_error_panic_hook",
- "console_log",
  "getrandom 0.2.15",
  "lazy_static",
  "log",
@@ -3575,7 +3573,6 @@ dependencies = [
  "solana-sysvar",
  "solana-sysvar-id",
  "thiserror 2.0.12",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -3726,7 +3723,6 @@ dependencies = [
  "bincode",
  "bs58",
  "getrandom 0.1.16",
- "js-sys",
  "serde",
  "solana-account",
  "solana-derivation-path",
@@ -3760,7 +3756,6 @@ dependencies = [
  "solana-transaction",
  "solana-transaction-error",
  "thiserror 2.0.12",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -3778,6 +3773,20 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.98",
+]
+
+[[package]]
+name = "solana-sdk-wasm-js"
+version = "1.0.0"
+dependencies = [
+ "console_error_panic_hook",
+ "console_log",
+ "js-sys",
+ "log",
+ "solana-instruction",
+ "solana-program",
+ "solana-sdk",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -4771,7 +4780,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.48.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
