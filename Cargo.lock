@@ -2800,6 +2800,7 @@ name = "solana-base3-encoding"
 version = "0.1.0"
 dependencies = [
  "bitvec",
+ "criterion",
 ]
 
 [[package]]
