@@ -2806,6 +2806,7 @@ dependencies = [
  "blstrs",
  "bytemuck",
  "cfg_eval",
+ "criterion",
  "ff",
  "group",
  "rand 0.8.5",
