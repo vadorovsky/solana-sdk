@@ -3267,14 +3267,12 @@ dependencies = [
  "bytemuck",
  "bytemuck_derive",
  "five8",
- "js-sys",
  "serde",
  "serde_derive",
  "solana-atomic-u64",
  "solana-frozen-abi",
  "solana-frozen-abi-macro",
  "solana-sanitize",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -3293,7 +3291,6 @@ version = "2.3.0"
 dependencies = [
  "bincode",
  "borsh",
- "getrandom 0.2.15",
  "serde",
  "serde_derive",
  "solana-define-syscall",
@@ -3302,7 +3299,6 @@ dependencies = [
  "solana-instruction",
  "solana-instruction-error",
  "solana-pubkey",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -3360,7 +3356,6 @@ dependencies = [
  "solana-signer",
  "static_assertions",
  "tiny-bip39",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -3462,7 +3457,6 @@ dependencies = [
  "solana-system-interface",
  "solana-transaction-error",
  "static_assertions",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -3682,7 +3676,6 @@ dependencies = [
  "curve25519-dalek",
  "five8",
  "five8_const",
- "js-sys",
  "num-traits",
  "rand 0.8.5",
  "serde",
@@ -3703,7 +3696,6 @@ dependencies = [
  "solana-system-interface",
  "strum",
  "strum_macros",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -3767,7 +3759,6 @@ version = "2.3.0"
 dependencies = [
  "bincode",
  "bs58",
- "getrandom 0.1.16",
  "serde",
  "solana-account",
  "solana-epoch-info",
@@ -3821,14 +3812,19 @@ dependencies = [
 name = "solana-sdk-wasm-js"
 version = "1.0.0"
 dependencies = [
+ "bincode",
  "console_error_panic_hook",
  "console_log",
- "getrandom 0.1.16",
+ "getrandom 0.2.15",
+ "js-sys",
  "log",
  "solana-hash",
  "solana-instruction",
  "solana-keypair",
+ "solana-message",
  "solana-pubkey",
+ "solana-signature",
+ "solana-signer",
  "solana-transaction",
  "wasm-bindgen",
 ]
@@ -4161,7 +4157,6 @@ dependencies = [
  "solana-transaction-error",
  "solana-vote-interface",
  "static_assertions",
- "wasm-bindgen",
 ]
 
 [[package]]
