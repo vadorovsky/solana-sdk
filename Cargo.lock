@@ -2976,7 +2976,7 @@ version = "3.0.0"
 
 [[package]]
 name = "solana-derivation-path"
-version = "2.2.1"
+version = "3.0.0"
 dependencies = [
  "assert_matches",
  "derivation-path",
