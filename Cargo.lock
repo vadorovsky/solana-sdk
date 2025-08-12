@@ -3986,7 +3986,7 @@ dependencies = [
 
 [[package]]
 name = "solana-system-transaction"
-version = "2.2.1"
+version = "3.0.0"
 dependencies = [
  "solana-hash",
  "solana-keypair",
