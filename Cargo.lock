@@ -3902,6 +3902,7 @@ dependencies = [
  "num-derive",
  "num-traits",
  "rand",
+ "thiserror 2.0.12",
 ]
 
 [[package]]
