@@ -1,6 +1,17 @@
 //! A trait for sanitizing values and members of over the wire messages.
 
+#![no_std]
+
+#[cfg(all(feature = "alloc", not(feature = "std")))]
+extern crate alloc;
+#[cfg(feature = "std")]
+extern crate std;
+
+#[cfg(all(feature = "alloc", not(feature = "std")))]
+use alloc::vec::Vec;
 use core::{error::Error, fmt};
+#[cfg(feature = "std")]
+use std::vec::Vec;
 
 #[derive(PartialEq, Debug, Eq, Clone)]
 pub enum SanitizeError {
@@ -36,6 +47,7 @@ pub trait Sanitize {
     }
 }
 
+#[cfg(any(feature = "alloc", feature = "std"))]
 impl<T: Sanitize> Sanitize for Vec<T> {
     fn sanitize(&self) -> Result<(), SanitizeError> {
         for x in self.iter() {
