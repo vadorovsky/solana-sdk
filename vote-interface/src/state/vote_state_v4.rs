@@ -209,6 +209,15 @@ impl VoteStateV4 {
                                                                           // Always initialized
     }
 
+    /// Number of credits owed to this account.
+    pub fn credits(&self) -> u64 {
+        if self.epoch_credits.is_empty() {
+            0
+        } else {
+            self.epoch_credits.last().unwrap().1
+        }
+    }
+
     #[cfg(test)]
     pub(crate) fn get_max_sized_vote_state() -> Self {
         use super::{MAX_EPOCH_CREDITS_HISTORY, MAX_LOCKOUT_HISTORY};
