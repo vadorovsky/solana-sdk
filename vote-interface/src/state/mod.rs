@@ -254,7 +254,7 @@ pub mod serde_compact_vote_state_update {
         let compact_vote_state_update = CompactVoteStateUpdate {
             root: vote_state_update.root.unwrap_or(Slot::MAX),
             lockout_offsets: lockout_offsets.collect::<Result<_, _>>()?,
-            hash: vote_state_update.hash,
+            hash: Hash::new_from_array(vote_state_update.hash.to_bytes()),
             timestamp: vote_state_update.timestamp,
         };
         compact_vote_state_update.serialize(serializer)
@@ -348,9 +348,9 @@ pub mod serde_tower_sync {
         let compact_tower_sync = CompactTowerSync {
             root: tower_sync.root.unwrap_or(Slot::MAX),
             lockout_offsets: lockout_offsets.collect::<Result<_, _>>()?,
-            hash: tower_sync.hash,
+            hash: Hash::new_from_array(tower_sync.hash.to_bytes()),
             timestamp: tower_sync.timestamp,
-            block_id: tower_sync.block_id,
+            block_id: Hash::new_from_array(tower_sync.block_id.to_bytes()),
         };
         compact_tower_sync.serialize(serializer)
     }

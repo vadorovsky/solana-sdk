@@ -286,7 +286,7 @@ impl Message {
             header.num_readonly_signed_accounts,
             header.num_readonly_unsigned_accounts,
             account_keys,
-            *blockhash,
+            Hash::new_from_array(blockhash.to_bytes()),
             instructions,
         )
     }

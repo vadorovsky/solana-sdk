@@ -18,8 +18,9 @@ rustdoc-args = ["--cfg=docsrs"]
 [features]
 atomic = ["dep:solana-atomic-u64"]
 borsh = ["dep:borsh"]
-bytemuck = ["dep:bytemuck", "dep:bytemuck_derive"]
-default = ["std"]
+bytemuck = ["copy", "dep:bytemuck", "dep:bytemuck_derive"]
+copy = []
+default = []
 frozen-abi = ["dep:solana-frozen-abi", "dep:solana-frozen-abi-macro", "std"]
 serde = ["dep:serde", "dep:serde_derive"]
 std = ["borsh?/std", "serde?/std"]
@@ -38,7 +39,7 @@ solana-sanitize = { workspace = true }
 
 [dev-dependencies]
 bs58 = { workspace = true, default-features = false, features = ["alloc"] }
-solana-hash = { path = ".", features = ["atomic"] }
+solana-hash = { path = ".", features = ["atomic", "copy"] }
 
 [lints]
 workspace = true
