@@ -3162,7 +3162,7 @@ dependencies = [
 
 [[package]]
 name = "solana-frozen-abi-macro"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "proc-macro2",
  "quote",
