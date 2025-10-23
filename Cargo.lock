@@ -3140,7 +3140,7 @@ dependencies = [
 
 [[package]]
 name = "solana-frozen-abi"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "bitflags 2.8.0",
  "boxcar",
