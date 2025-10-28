@@ -19,7 +19,7 @@ pub mod syscalls;
 use crate::error::AddressError;
 #[cfg(feature = "decode")]
 use crate::error::ParseAddressError;
-#[cfg(all(feature = "rand", not(target_os = "solana")))]
+#[cfg(all(feature = "rand", not(any(target_os = "solana", target_arch = "bpf"))))]
 pub use crate::hasher::{AddressHasher, AddressHasherBuilder};
 
 #[cfg(feature = "alloc")]
@@ -57,7 +57,12 @@ pub const MAX_SEEDS: usize = 16;
 #[cfg(feature = "decode")]
 /// Maximum string length of a base58 encoded address.
 const MAX_BASE58_LEN: usize = 44;
+
 /// Marker used to find program derived addresses (PDAs).
+#[cfg(target_arch = "bpf")]
+pub static PDA_MARKER: &[u8; 21] = b"ProgramDerivedAddress";
+/// Marker used to find program derived addresses (PDAs).
+#[cfg(not(target_arch = "bpf"))]
 pub const PDA_MARKER: &[u8; 21] = b"ProgramDerivedAddress";
 
 /// The address of a [Solana account][acc].
@@ -164,13 +169,13 @@ impl TryFrom<&str> for Address {
     }
 }
 
-// If target_os = "solana", then this panics so there are no dependencies.
-// When target_os != "solana", this should be opt-in so users
-// don't need the curve25519 dependency.
-#[cfg(any(target_os = "solana", feature = "curve25519"))]
+// If target_os = "solana" or target_arch = "bpf", then this panics so there
+// are no dependencies; otherwise this should be opt-in so users don't need the
+// curve25519 dependency.
+#[cfg(any(target_os = "solana", target_arch = "bpf", feature = "curve25519"))]
 #[allow(clippy::used_underscore_binding)]
 pub fn bytes_are_curve_point<T: AsRef<[u8]>>(_bytes: T) -> bool {
-    #[cfg(not(target_os = "solana"))]
+    #[cfg(not(any(target_os = "solana", target_arch = "bpf")))]
     {
         let Ok(compressed_edwards_y) =
             curve25519_dalek::edwards::CompressedEdwardsY::from_slice(_bytes.as_ref())
@@ -179,7 +184,7 @@ pub fn bytes_are_curve_point<T: AsRef<[u8]>>(_bytes: T) -> bool {
         };
         compressed_edwards_y.decompress().is_some()
     }
-    #[cfg(target_os = "solana")]
+    #[cfg(any(target_os = "solana", target_arch = "bpf"))]
     unimplemented!();
 }
 
@@ -232,10 +237,10 @@ impl Address {
         Self::from(b)
     }
 
-    // If target_os = "solana", then the solana_sha256_hasher crate will use
-    // syscalls which bring no dependencies.
-    // When target_os != "solana", this should be opt-in so users
-    // don't need the sha2 dependency.
+    // If target_os = "solana" or target_arch = "bpf", then the
+    // `solana_sha256_hasher` crate will use syscalls which bring no
+    // dependencies; otherwise, this should be opt-in so users don't
+    // need the sha2 dependency.
     #[cfg(feature = "sha2")]
     pub fn create_with_seed(
         base: &Address,
@@ -267,16 +272,16 @@ impl Address {
         &self.0
     }
 
-    // If target_os = "solana", then this panics so there are no dependencies.
-    // When target_os != "solana", this should be opt-in so users
-    // don't need the curve25519 dependency.
-    #[cfg(any(target_os = "solana", feature = "curve25519"))]
+    // If target_os = "solana" or target_arch = "bpf", then this panics so there
+    // are no dependencies; otherwise, this should be opt-in so users don't need
+    // the curve25519 dependency.
+    #[cfg(any(target_os = "solana", target_arch = "bpf", feature = "curve25519"))]
     pub fn is_on_curve(&self) -> bool {
         bytes_are_curve_point(self)
     }
 
-    #[cfg(all(not(target_os = "solana"), feature = "std"))]
-    /// Log a `Address` from a program
+    /// Log an `Address` value.
+    #[cfg(all(not(any(target_os = "solana", target_arch = "bpf")), feature = "std"))]
     pub fn log(&self) {
         std::println!("{}", std::string::ToString::to_string(&self));
     }
@@ -388,8 +393,12 @@ macro_rules! address {
 #[macro_export]
 macro_rules! declare_id {
     ($address:expr) => {
+        #[cfg(not(target_arch = "bpf"))]
         /// The const program ID.
         pub const ID: $crate::Address = $crate::Address::from_str_const($address);
+        #[cfg(target_arch = "bpf")]
+        /// The const program ID.
+        pub static ID: $crate::Address = $crate::Address::from_str_const($address);
 
         /// Returns `true` if given address is the ID.
         // TODO make this const once `derive_const` makes it out of nightly
@@ -400,7 +409,12 @@ macro_rules! declare_id {
 
         /// Returns the ID.
         pub const fn id() -> $crate::Address {
-            ID
+            #[cfg(not(target_arch = "bpf"))]
+            {
+                ID
+            }
+            #[cfg(target_arch = "bpf")]
+            $crate::Address::from_str_const($address)
         }
 
         #[cfg(test)]
@@ -416,8 +430,12 @@ macro_rules! declare_id {
 #[macro_export]
 macro_rules! declare_deprecated_id {
     ($address:expr) => {
+        #[cfg(not(target_arch = "bpf"))]
         /// The const ID.
         pub const ID: $crate::Address = $crate::Address::from_str_const($address);
+        #[cfg(target_arch = "bpf")]
+        /// The const ID.
+        pub static ID: $crate::Address = $crate::Address::from_str_const($address);
 
         /// Returns `true` if given address is the ID.
         // TODO make this const once `derive_const` makes it out of nightly
@@ -430,7 +448,12 @@ macro_rules! declare_deprecated_id {
         /// Returns the ID.
         #[deprecated()]
         pub const fn id() -> $crate::Address {
-            ID
+            #[cfg(not(target_arch = "bpf"))]
+            {
+                ID
+            }
+            #[cfg(target_arch = "bpf")]
+            $crate::Address::from_str_const($address)
         }
 
         #[cfg(test)]
