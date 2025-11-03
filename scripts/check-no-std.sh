@@ -16,6 +16,7 @@ no_std_crates=(
   -p solana-define-syscall
   -p solana-epoch-info
   -p solana-epoch-rewards
+  -p solana-epoch-schedule
   -p solana-fee-calculator
   -p solana-hash
   -p solana-keccak-hasher
