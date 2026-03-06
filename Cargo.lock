@@ -3770,7 +3770,7 @@ dependencies = [
 
 [[package]]
 name = "solana-instruction-view"
-version = "1.0.0"
+version = "2.0.0"
 dependencies = [
  "solana-account-view",
  "solana-address",
