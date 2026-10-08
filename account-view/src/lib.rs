@@ -122,21 +122,15 @@ impl AccountView {
         unsafe { &(*self.raw).address }
     }
 
-    /// Return a reference to the address of the program that owns this account.
+    /// Return the address of the program that owns this account.
     ///
     /// For ownership checks, it is recommended to use the [`Self::owned_by`]
     /// method instead.
-    ///
-    /// # Important
-    ///
-    /// This method returns a reference to the owner field of the account, which
-    /// can be modified by programs using [`Self::assign`]. It is the caller's
-    /// responsibility to ensure that this reference is not used after the
-    /// account owner has been changed.
+    #[allow(clippy::clone_on_copy)]
     #[inline(always)]
-    pub fn owner(&self) -> &Address {
+    pub fn owner(&self) -> Address {
         // SAFETY: The `raw` pointer is guaranteed to be valid.
-        unsafe { &(*self.raw).owner }
+        unsafe { (*self.raw).owner.clone() }
     }
 
     /// Indicate whether the transaction was signed by this account.
@@ -199,16 +193,22 @@ impl AccountView {
         unsafe { (*self.raw).owner == *program }
     }
 
+    /// Checks if this account and the other account are owned by the
+    /// same program.
+    #[inline(always)]
+    pub fn has_same_owner(&self, other: &AccountView) -> bool {
+        // SAFETY: Both `raw` pointers are guaranteed to be valid.
+        unsafe { (*self.raw).owner == (*other.raw).owner }
+    }
+
     /// Changes the owner of the account.
-    ///
-    /// # Safety
-    ///
-    /// It is undefined behavior to use this method while there is an active reference
-    /// to the `owner` returned by [`Self::owner`].
     #[allow(clippy::clone_on_copy)]
     #[inline(always)]
-    pub unsafe fn assign(&mut self, new_owner: &Address) {
-        write(addr_of_mut!((*self.raw).owner), new_owner.clone());
+    pub fn assign(&mut self, new_owner: &Address) {
+        // SAFETY: The `raw` pointer is guaranteed to be valid.
+        unsafe {
+            write(addr_of_mut!((*self.raw).owner), new_owner.clone());
+        }
     }
 
     /// Return `true` if the account data is borrowed in any form.
@@ -330,8 +330,7 @@ impl AccountView {
     /// # Important
     ///
     /// The lamports must be moved from the account prior to closing it to prevent
-    /// an unbalanced instruction error. Any existing reference to the account owner
-    /// will be invalidated after calling this method.
+    /// an unbalanced instruction error.
     #[inline]
     pub fn close(&mut self) -> ProgramResult {
         // Make sure the account is not borrowed since we are about to
