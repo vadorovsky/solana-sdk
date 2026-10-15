@@ -3609,7 +3609,7 @@ dependencies = [
 
 [[package]]
 name = "solana-frozen-abi"
-version = "3.9.0"
+version = "3.9.1"
 dependencies = [
  "bincode",
  "bitflags",
