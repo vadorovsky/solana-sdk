@@ -4562,7 +4562,7 @@ dependencies = [
 
 [[package]]
 name = "solana-svm-transaction"
-version = "7.0.0"
+version = "8.0.0"
 dependencies = [
  "solana-hash",
  "solana-message",
