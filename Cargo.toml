@@ -238,7 +238,7 @@ solana-clock = { path = "clock", version = "4.0.0" }
 solana-cluster-type = { path = "cluster-type", version = "3.2.1" }
 solana-commitment-config = { path = "commitment-config", version = "3.0.0" }
 solana-cpi = { path = "cpi", version = "3.0.0" }
-solana-define-syscall = { path = "define-syscall", version = "5.1.0" }
+solana-define-syscall = { path = "define-syscall", version = "5.3.0" }
 solana-derivation-path = { path = "derivation-path", version = "3.0.0" }
 solana-ed25519 = { version = "0.2.4", default-features = false, features = ["digest", "precomputed-tables", "rand_core", "zeroize"] }
 solana-epoch-info = { path = "epoch-info", version = "3.0.0" }
