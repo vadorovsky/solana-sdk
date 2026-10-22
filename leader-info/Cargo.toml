@@ -2,7 +2,7 @@
 name = "solana-leader-info"
 description = "Solana leader info syscall API (SIMD-0558)"
 documentation = "https://docs.rs/solana-leader-info"
-version = "0.1.0"
+version = "1.0.0"
 authors = { workspace = true }
 repository = { workspace = true }
 homepage = { workspace = true }
